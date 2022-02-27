@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    # env_file:
+    #     - .env
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      # defined in env file 
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    ports:
+      - "8000:80"
+      - "8443:443"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    working_dir: /var/www/html
+    volumes:
+      - ../wp-content:/var/www/html/wp-content
+      # - ../wp-template:/var/www/html/wp-content/themes
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+volumes:
+  db_data:
