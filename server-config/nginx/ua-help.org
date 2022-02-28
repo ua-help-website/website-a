@@ -1,8 +1,8 @@
 server {
 	listen 443 ssl;
-	server_name ua-help.mjwcodr.de;
-	ssl_certificate      /etc/letsencrypt/live/ua-help.mjwcodr.de/fullchain.pem;
-        ssl_certificate_key  /etc/letsencrypt/live/ua-help.mjwcodr.de/privkey.pem;
+	server_name uahelp2.mjwcodr.de;
+	ssl_certificate      /etc/letsencrypt/live/uahelp2.mjwcodr.de/fullchain.pem;
+        ssl_certificate_key  /etc/letsencrypt/live/uahelp2.mjwcodr.de/privkey.pem;
 
 	location / {
 		proxy_pass	http://localhost:8000;
@@ -14,7 +14,7 @@ server {
 }
 server {
 	listen 80;
-	server_name ua-help.mjwcodr.de;
+	server_name uahelp2.mjwcodr.de;
 	location / {
                 proxy_pass      http://localhost:8000;
                 proxy_set_header        Host            $host;
