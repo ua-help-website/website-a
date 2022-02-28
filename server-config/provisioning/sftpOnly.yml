@@ -1,0 +1,36 @@
+---
+- hosts: website-a
+  become: true
+  vars: 
+    user: uasftp
+    # password is hashed using
+    # python -c 'import crypt; print crypt.crypt("$somePassword$", "$1$aNMZaDnW55nbf$")'
+    userpassword: $1$aNMZaDnW$04/6OLuw6FhVXypJqcMI4.
+  tasks: 
+    - name: add sftpuser(s)
+      user:
+        name: "{{ user }}"
+        group: www-data
+        shell: /bin/bash
+        password: "{{ userpassword }}"
+        create_home: false
+      
+    - name: only sftp
+      blockinfile:
+        path: /etc/ssh/sshd_config
+        backup: yes
+        validate: /usr/sbin/sshd -T -f %s
+        block: |
+          Match User {{ user}}
+            PasswordAuthentication yes
+            ChrootDirectory /srv/www/website-a/
+            ForceCommand internal-sftp
+            PermitTunnel no
+            AllowAgentForwarding no
+            AllowTcpForwarding no
+            X11Forwarding no
+      
+    - name: restart ssh-server
+      service:  
+        state: restarted
+        name: sshd
