@@ -1,0 +1,27 @@
+---
+- hosts: [website-a]
+  tasks:
+    - name: Clone website-a
+      become: true
+      git:
+        repo: https://github.com/ua-help-website/website-a.git
+        dest: /srv/www/website-a/
+
+    - name: link nginx config
+      become: true
+      file:
+        src: /srv/www/website-a/server-config/nginx/ua-help.org
+        dest: /etc/nginx/sites-enabled/ua-help.org
+        state: link
+
+    - name: restart nginx
+      become: true
+      service:
+        name: nginx
+        state: restarted
+
+    - name: start docker container
+      become: true
+      shell:
+        cmd: "./start.sh"
+        chdir: "/srv/www/website-a/server-config/docker/"
