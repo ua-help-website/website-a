@@ -6,6 +6,7 @@
       git:
         repo: https://github.com/ua-help-website/website-a.git
         dest: /srv/www/website-a/
+        force: true
 
     - name: link nginx config
       become: true
@@ -13,13 +14,18 @@
         src: /srv/www/website-a/server-config/nginx/ua-help.org
         dest: /etc/nginx/sites-enabled/ua-help.org
         state: link
+    
+    - name: remove default config
+      become: true
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
 
     - name: restart nginx
       become: true
       service:
         name: nginx
         state: restarted
-
     - name: start docker container
       become: true
       shell:

@@ -1,0 +1,19 @@
+---
+- hosts: [website-a]
+  become: true
+  tasks:
+    - name: install nginx and certbot
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop: 
+        - nginx
+        - certbot
+        - python3-certbot-nginx
+
+    - name: start nginx
+      service:
+        name: nginx
+        state: started
+
