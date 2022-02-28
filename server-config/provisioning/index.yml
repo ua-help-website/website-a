@@ -1,4 +1,4 @@
 ---
 - import_playbook: docker.yml
-- import_playbook: nginx.yml
+- import_playbook: webserver.yml
 - import_playbook: startWebsite.yml
