@@ -11,10 +11,11 @@
       user:
         name: "{{ user }}"
         group: www-data
-        shell: /bin/bash
+        shell: /bin/false
         password: "{{ userpassword }}"
         create_home: false
-      
+    
+
     - name: only sftp
       blockinfile:
         path: /etc/ssh/sshd_config

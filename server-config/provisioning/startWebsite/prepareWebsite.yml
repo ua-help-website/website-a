@@ -1,0 +1,38 @@
+---
+- hosts: [website-a]
+  tasks:
+    - name: Clone website-a
+      become: true
+      git:
+        repo: https://github.com/ua-help-website/website-a.git
+        dest: /srv/www/website-a/
+        force: true
+
+    - name: link nginx config
+      become: true
+      file:
+        src: /srv/www/website-a/server-config/nginx/ua-help.org
+        dest: /etc/nginx/sites-enabled/ua-help.org
+        state: link
+    
+    - name: remove default config
+      become: true
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: restart nginx
+      become: true
+      service:
+        name: nginx
+        state: restarted
+
+    - name: set permissions for /wp-content
+      become: true
+      file:
+        path: /srv/www/website-a/wp-content/
+        owner: www-data
+        group: www-data
+        mode: '1775'
+        recurse: true
+        state: directory

@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks: 
+    - name: start docker container
+      become: true
+      shell:
+        cmd: "./start.sh"
+        chdir: "/srv/www/website-a/server-config/docker/"
