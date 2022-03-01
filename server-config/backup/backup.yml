@@ -2,5 +2,5 @@
 - hosts: website-a
   tasks:
     - name: run backup-script
-      shell:
-        cmd: "/bin/bash ./backup/backup.sh"
+      become: true
+      script: backup.sh
