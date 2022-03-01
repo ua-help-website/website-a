@@ -24,7 +24,7 @@
           Match User {{ user}}
             PasswordAuthentication yes
             ChrootDirectory /srv/www/website-a/
-            ForceCommand internal-sftp
+            ForceCommand internal-sftp -d /wp-content
             PermitTunnel no
             AllowAgentForwarding no
             AllowTcpForwarding no
